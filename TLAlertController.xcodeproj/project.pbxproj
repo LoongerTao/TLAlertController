@@ -1,0 +1,374 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		146645E7240799FF00FA0EE8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645E6240799FF00FA0EE8 /* AppDelegate.m */; };
+		146645EA240799FF00FA0EE8 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645E9240799FF00FA0EE8 /* SceneDelegate.m */; };
+		146645ED240799FF00FA0EE8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645EC240799FF00FA0EE8 /* ViewController.m */; };
+		146645F0240799FF00FA0EE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 146645EE240799FF00FA0EE8 /* Main.storyboard */; };
+		146645F224079A0100FA0EE8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 146645F124079A0100FA0EE8 /* Assets.xcassets */; };
+		146645F524079A0100FA0EE8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 146645F324079A0100FA0EE8 /* LaunchScreen.storyboard */; };
+		146645F824079A0100FA0EE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645F724079A0100FA0EE8 /* main.m */; };
+		1466460124079DFE00FA0EE8 /* TLAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1466460024079DFE00FA0EE8 /* TLAlertController.m */; };
+		146646042407A0B600FA0EE8 /* TLAlertPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 146646032407A0B600FA0EE8 /* TLAlertPresentationController.m */; };
+		14BEB2E42409070C000C89EF /* TLAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14BEB2E32409070C000C89EF /* TLAlertAction.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		146645E2240799FF00FA0EE8 /* TLAlertController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TLAlertController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		146645E5240799FF00FA0EE8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		146645E6240799FF00FA0EE8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		146645E8240799FF00FA0EE8 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		146645E9240799FF00FA0EE8 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		146645EB240799FF00FA0EE8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		146645EC240799FF00FA0EE8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		146645EF240799FF00FA0EE8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		146645F124079A0100FA0EE8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		146645F424079A0100FA0EE8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		146645F624079A0100FA0EE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		146645F724079A0100FA0EE8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		146645FF24079DFE00FA0EE8 /* TLAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLAlertController.h; sourceTree = "<group>"; };
+		1466460024079DFE00FA0EE8 /* TLAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAlertController.m; sourceTree = "<group>"; };
+		146646022407A0B600FA0EE8 /* TLAlertPresentationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLAlertPresentationController.h; sourceTree = "<group>"; };
+		146646032407A0B600FA0EE8 /* TLAlertPresentationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAlertPresentationController.m; sourceTree = "<group>"; };
+		14BEB2E22409070C000C89EF /* TLAlertAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLAlertAction.h; sourceTree = "<group>"; };
+		14BEB2E32409070C000C89EF /* TLAlertAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAlertAction.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		146645DF240799FF00FA0EE8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		146645D9240799FF00FA0EE8 = {
+			isa = PBXGroup;
+			children = (
+				146645E4240799FF00FA0EE8 /* TLAlertController */,
+				146645E3240799FF00FA0EE8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		146645E3240799FF00FA0EE8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				146645E2240799FF00FA0EE8 /* TLAlertController.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		146645E4240799FF00FA0EE8 /* TLAlertController */ = {
+			isa = PBXGroup;
+			children = (
+				146645FE24079D8D00FA0EE8 /* Lib */,
+				146645E5240799FF00FA0EE8 /* AppDelegate.h */,
+				146645E6240799FF00FA0EE8 /* AppDelegate.m */,
+				146645E8240799FF00FA0EE8 /* SceneDelegate.h */,
+				146645E9240799FF00FA0EE8 /* SceneDelegate.m */,
+				146645EB240799FF00FA0EE8 /* ViewController.h */,
+				146645EC240799FF00FA0EE8 /* ViewController.m */,
+				146645EE240799FF00FA0EE8 /* Main.storyboard */,
+				146645F124079A0100FA0EE8 /* Assets.xcassets */,
+				146645F324079A0100FA0EE8 /* LaunchScreen.storyboard */,
+				146645F624079A0100FA0EE8 /* Info.plist */,
+				146645F724079A0100FA0EE8 /* main.m */,
+			);
+			path = TLAlertController;
+			sourceTree = "<group>";
+		};
+		146645FE24079D8D00FA0EE8 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				146645FF24079DFE00FA0EE8 /* TLAlertController.h */,
+				1466460024079DFE00FA0EE8 /* TLAlertController.m */,
+				14BEB2E22409070C000C89EF /* TLAlertAction.h */,
+				14BEB2E32409070C000C89EF /* TLAlertAction.m */,
+				146646022407A0B600FA0EE8 /* TLAlertPresentationController.h */,
+				146646032407A0B600FA0EE8 /* TLAlertPresentationController.m */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		146645E1240799FF00FA0EE8 /* TLAlertController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 146645FB24079A0100FA0EE8 /* Build configuration list for PBXNativeTarget "TLAlertController" */;
+			buildPhases = (
+				146645DE240799FF00FA0EE8 /* Sources */,
+				146645DF240799FF00FA0EE8 /* Frameworks */,
+				146645E0240799FF00FA0EE8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TLAlertController;
+			productName = TLAlertController;
+			productReference = 146645E2240799FF00FA0EE8 /* TLAlertController.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		146645DA240799FF00FA0EE8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1100;
+				ORGANIZATIONNAME = "故乡的云";
+				TargetAttributes = {
+					146645E1240799FF00FA0EE8 = {
+						CreatedOnToolsVersion = 11.0;
+					};
+				};
+			};
+			buildConfigurationList = 146645DD240799FF00FA0EE8 /* Build configuration list for PBXProject "TLAlertController" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 146645D9240799FF00FA0EE8;
+			productRefGroup = 146645E3240799FF00FA0EE8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				146645E1240799FF00FA0EE8 /* TLAlertController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		146645E0240799FF00FA0EE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				146645F524079A0100FA0EE8 /* LaunchScreen.storyboard in Resources */,
+				146645F224079A0100FA0EE8 /* Assets.xcassets in Resources */,
+				146645F0240799FF00FA0EE8 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		146645DE240799FF00FA0EE8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				146646042407A0B600FA0EE8 /* TLAlertPresentationController.m in Sources */,
+				146645ED240799FF00FA0EE8 /* ViewController.m in Sources */,
+				146645E7240799FF00FA0EE8 /* AppDelegate.m in Sources */,
+				146645F824079A0100FA0EE8 /* main.m in Sources */,
+				146645EA240799FF00FA0EE8 /* SceneDelegate.m in Sources */,
+				1466460124079DFE00FA0EE8 /* TLAlertController.m in Sources */,
+				14BEB2E42409070C000C89EF /* TLAlertAction.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		146645EE240799FF00FA0EE8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				146645EF240799FF00FA0EE8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		146645F324079A0100FA0EE8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				146645F424079A0100FA0EE8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		146645F924079A0100FA0EE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		146645FA24079A0100FA0EE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		146645FC24079A0100FA0EE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DA3ZJPDSKE;
+				INFOPLIST_FILE = TLAlertController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gxdy.TLAlertController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		146645FD24079A0100FA0EE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DA3ZJPDSKE;
+				INFOPLIST_FILE = TLAlertController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gxdy.TLAlertController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		146645DD240799FF00FA0EE8 /* Build configuration list for PBXProject "TLAlertController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				146645F924079A0100FA0EE8 /* Debug */,
+				146645FA24079A0100FA0EE8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		146645FB24079A0100FA0EE8 /* Build configuration list for PBXNativeTarget "TLAlertController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				146645FC24079A0100FA0EE8 /* Debug */,
+				146645FD24079A0100FA0EE8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 146645DA240799FF00FA0EE8 /* Project object */;
+}
