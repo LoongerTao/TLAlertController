@@ -28,10 +28,22 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertAction : NSObject
 *  @return TLAlertController按钮的实例
 */
 + (instancetype)actionWithTitle:(nullable NSString *)title style:(TLAlertActionStyle)style handler:(void (^ __nullable)(TLAlertAction *action))handler;
+/**
+*  初始化`TLAlertController`的按钮
+*
+*  @param customView   自定义View
+*  @param style   按钮style，跟系统一样，有 Default、Cancel、Destructive 三种类型
+*  @param handler 处理点击事件的block，注意 TLAlertAction 点击后必定会隐藏 alertController，不需要手动在 handler 里 hide
+*
+*  @return TLAlertController按钮的实例
+*/
++ (instancetype)actionWithCustomView:(UIView *)customView style:(TLAlertActionStyle)style handler:(void (^ __nullable)(TLAlertAction *action))handler;
 
 @property (nullable, nonatomic, readonly) NSString *title;
+/// 会自动匹配superview的size
+@property (nullable, nonatomic, readonly) UIView *customView;
 @property (nonatomic, readonly) TLAlertActionStyle style;
-//@property (nonatomic, getter=isEnabled) BOOL enabled;
+@property (nonatomic, getter=isEnabled) BOOL enabled;
 @property(nonatomic, readonly) void (^handler)(TLAlertAction *action);
 
 @end

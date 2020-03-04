@@ -13,8 +13,9 @@
 #define kMargin 8.f
 #define kSeparatorLineHeight 0.333f
 #define kRowHeight 57.f
+#define kAlertRowHeight 44.f
 #define kMaxWidth (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - kMargin * 2)
-
+#define kAlertWidth 270.f
 #define kCancelBtnTag 1000
 
 @interface TLAlertController ()
@@ -35,6 +36,8 @@
 
 /// 取消按钮容器
 @property(nonatomic, weak)  UIView *cancelView;
+
+@property(nonatomic, strong) NSMutableDictionary <NSString *, UIButton *>*btns;
 @end
 
 @implementation TLAlertController
@@ -57,6 +60,8 @@
         self.textFontOfDestructive = [UIFont systemFontOfSize:17];
         
         self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:0.03];
+        
+        self.btns = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -65,9 +70,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-    
-    CGFloat W = kMaxWidth;
+    CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
     if (self.title || self.message) {
         if (self.title) {
             UILabel *titleLabel = [[UILabel alloc] init];
@@ -89,38 +92,66 @@
         }
     }
     
-    if (self.acts.count) {
-        UIScrollView *scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, W, 0)];
-        [self.containerView.contentView addSubview:scrollV];
-        _stackScrollView = scrollV;
-        scrollV.bounces = NO;
+    if(_preferredStyle == TLAlertControllerStyleAlert) {
+        if(self.actions.count != 2) {
+            UIScrollView *scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, W, 0)];
+            [self.containerView.contentView addSubview:scrollV];
+            _stackScrollView = scrollV;
+            scrollV.bounces = NO;
+            
+            UIStackView *stackView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight * self.acts.count)];
+            _stackView = stackView;
+            [scrollV addSubview:stackView];
+            stackView.axis = UILayoutConstraintAxisVertical;
+            stackView.distribution = UIStackViewDistributionFillEqually;
+            
+            [self.actions enumerateObjectsUsingBlock:^(TLAlertAction *action, NSUInteger idx, BOOL * _Nonnull stop) {
+                BOOL isShow = idx != 0 || (idx == 0 && (self.title || self.message));
+                [_stackView addArrangedSubview:[self addRowWithAction:action tag:idx showSeparator:isShow]];
+            }];
+        }else {
+            
+        }
+    }else {
+        if (self.acts.count) {
+            UIScrollView *scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, W, 0)];
+            [self.containerView.contentView addSubview:scrollV];
+            _stackScrollView = scrollV;
+            scrollV.bounces = NO;
+            
+            UIStackView *stackView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight * self.acts.count)];
+            _stackView = stackView;
+            [scrollV addSubview:stackView];
+            stackView.axis = UILayoutConstraintAxisVertical;
+            stackView.distribution = UIStackViewDistributionFillEqually;
+            
+            [self.acts enumerateObjectsUsingBlock:^(TLAlertAction *action, NSUInteger idx, BOOL * _Nonnull stop) {
+                BOOL isShow = idx != 0 || (idx == 0 && (self.title || self.message));
+                [_stackView addArrangedSubview:[self addRowWithAction:action tag:idx showSeparator:isShow]];
+            }];
+        }
         
-        UIStackView *stackView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, W, kRowHeight * self.acts.count)];
-        _stackView = stackView;
-        [scrollV addSubview:stackView];
-        stackView.axis = UILayoutConstraintAxisVertical;
-        stackView.distribution = UIStackViewDistributionFillEqually;
-        
-        [self.acts enumerateObjectsUsingBlock:^(TLAlertAction *action, NSUInteger idx, BOOL * _Nonnull stop) {
-            BOOL isShow = idx != 0 || (idx == 0 && (self.title || self.message));
-            [_stackView addArrangedSubview:[self addRowWithAction:action tag:idx showSeparator:isShow]];
-        }];
+        if (self.cancelAction) {
+            UIView *cancelView = [[UIView alloc] init];
+            _cancelView = cancelView;
+            cancelView.backgroundColor = [UIColor whiteColor];
+            cancelView.layer.cornerRadius = kCornerRadius;
+            cancelView.clipsToBounds = YES;
+            [self.view addSubview:cancelView];
+            
+            UIView *view = [self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:NO];
+            view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
+            [cancelView addSubview:view];
+        }
     }
     
-    if (self.cancelAction) {
-        UIView *cancelView = [[UIView alloc] init];
-        _cancelView = cancelView;
-        cancelView.backgroundColor = [UIColor whiteColor];
-        cancelView.layer.cornerRadius = kCornerRadius;
-        cancelView.clipsToBounds = YES;
-        [self.view addSubview:cancelView];
-
-        UIView *view = [self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:NO];
-        view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
-        [cancelView addSubview:view];
-    }
-    
+    /// 刷新布局
     [self updatePreferredContentSizeWithTraitCollection:self.traitCollection];
+    
+    /// 更新按钮使能
+    for (TLAlertAction *action in self.actions) {
+        self.btns[[NSString stringWithFormat:@"%p", action]].enabled = action.enabled;
+    }
 }
 
 // MARK: - update Preferred Content Size
@@ -135,7 +166,7 @@
 - (void)updatePreferredContentSizeWithTraitCollection:(UITraitCollection *)traitCollection {
     BOOL isLandspace = traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact;
     CGSize size = [UIScreen mainScreen].bounds.size;
-    CGFloat W =  kMaxWidth; // 始终以最小屏宽计算
+    CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth; // 始终以最小屏宽计算
    
     if (_titleLabel) {
         CGFloat rowH = [@"一行文本的高度" boundingRectWithSize:CGSizeMake(1000, 40)
@@ -161,21 +192,32 @@
     }
 
     if (self.acts.count) {
-        CGFloat H = kRowHeight * self.acts.count;
+        CGFloat H = self.rowHeight * self.acts.count;
         CGFloat top = _titleView ? CGRectGetMaxY(_titleView.frame) : 0;
         CGFloat kMaxHeight = 0;
-        CGFloat iphoneXBar = Is_iPhoneX ? 34 : 0;
-        if (isLandspace) {
-            kMaxHeight = MIN(size.width, size.height) - kMargin - iphoneXBar;
+        CGFloat maxH = 0;
+        if (_preferredStyle == TLAlertControllerStyleAlert) {
+            if (isLandspace) {
+                kMaxHeight = MIN(size.width, size.height);
+            }else {
+                kMaxHeight = MAX(size.width, size.height);
+            }
+            maxH = kMaxHeight - top - 122;
         }else {
-            CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 44;
-            kMaxHeight = MAX(size.width, size.height) - top - iphoneXBar;
+            CGFloat iphoneXBar = Is_iPhoneX ? 34 : 0;
+            if (isLandspace) {
+                kMaxHeight = MIN(size.width, size.height) - kMargin - iphoneXBar;
+            }else {
+                CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 44;
+                kMaxHeight = MAX(size.width, size.height) - top - iphoneXBar;
+            }
+            maxH = kMaxHeight - top - (self.cancelAction ? kMargin + self.rowHeight : 0);
         }
         
-        CGFloat maxH = kMaxHeight - top - (self.cancelAction ? kMargin + kRowHeight : 0);
         H = H > maxH ? maxH : H;
         _stackScrollView.frame = CGRectMake(0, top, W, H);
-        _stackView.frame = CGRectMake(0, 0, W, kRowHeight * self.acts.count);
+        NSInteger count = _preferredStyle == TLAlertControllerStyleAlert ? self.actions.count : self.acts.count;
+        _stackView.frame = CGRectMake(0, 0, W, self.rowHeight * count);
         _stackScrollView.contentSize = _stackView.frame.size;
     }
     
@@ -188,15 +230,15 @@
     }
     
     CGFloat preferredContentH = 0;
-    if (self.cancelAction) {
+    if (_preferredStyle == TLAlertControllerStyleActionSheet && self.cancelAction) {
         CGFloat top = 0;
         if (_containerView) {
             top = CGRectGetMaxY(_containerView.frame) + kMargin;
         }
-        self.cancelView.frame = CGRectMake(0, top, W, kRowHeight);
-        preferredContentH = CGRectGetMaxY(self.cancelView.frame);
+        _cancelView.frame = CGRectMake(0, top, W, self.rowHeight);
+        preferredContentH = CGRectGetMaxY(_cancelView.frame);
     }else {
-        preferredContentH = CGRectGetMaxY(self.stackScrollView.frame);
+        preferredContentH = CGRectGetMaxY(_stackScrollView.frame);
     }
     self.preferredContentSize = CGSizeMake(W, preferredContentH);
 }
@@ -242,9 +284,12 @@
 }
 
 // MARK: - common method
+- (CGFloat)rowHeight {
+    return _preferredStyle == TLAlertControllerStyleAlert ? kAlertRowHeight : kRowHeight;
+}
 - (UIView *)addRowWithAction:(TLAlertAction *)action tag:(NSInteger)tag showSeparator:(BOOL)isShow {
-    CGFloat W = kMaxWidth;
-    UIView *rowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, W, kRowHeight)];
+    CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
+    UIView *rowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight)];
 
     if (isShow) {
         CALayer *sp = [[CALayer alloc] init];
@@ -253,26 +298,46 @@
         [rowView.layer addSublayer:sp];
     }
     
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, kSeparatorLineHeight, W, kRowHeight - kSeparatorLineHeight)];
-    btn.tag = tag;
-    [btn setTitle:action.title forState:UIControlStateNormal];
-    UIImage *bgImg = [self imageWithColor:self.actionBgColorOfHighlighted size:CGSizeZero];
-    [btn setBackgroundImage:bgImg forState:UIControlStateHighlighted];
-    [btn setTitleColor:[self colorWithHex:@"CCCCCC"] forState:UIControlStateDisabled];
-    if (action.style == TLAlertActionStyleDefault) {
-        [btn setTitleColor:self.textColorOfDefault forState:UIControlStateNormal];
-        btn.titleLabel.font = self.textFontOfDefault;
+    CGRect frame = CGRectMake(0, kSeparatorLineHeight, W, self.rowHeight - kSeparatorLineHeight);
+    if (action.customView) {
+        action.customView.frame = frame;
+        [rowView addSubview:action.customView];
         
-    }else if (action.style == TLAlertActionStyleDestructive) {
-        [btn setTitleColor:self.textColorOfDestructive forState:UIControlStateNormal];
-        btn.titleLabel.font = self.textFontOfDestructive;
+        action.customView.tag = tag;
         
-    }else if (action.style == TLAlertActionStyleCancel) {
-        [btn setTitleColor:self.textColorOfCancel forState:UIControlStateNormal];
-        btn.titleLabel.font = self.textFontOfCancel;
+        if ([action.customView isKindOfClass:[UIButton class]]) {
+            UIButton *btn = (UIButton *)action.customView;
+            [btn addTarget:self action:@selector(itemDidClick:) forControlEvents:UIControlEventTouchUpInside];
+            self.btns[[NSString stringWithFormat:@"%p", action]] = btn;
+        }else {
+            UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(itemDidClick2:)];
+            gesture.minimumPressDuration = 0.001;
+            [action.customView addGestureRecognizer:gesture];
+        }
+    }else {
+        UIButton *btn = [[UIButton alloc] initWithFrame:frame];
+        btn.tag = tag;
+        [btn setTitle:action.title forState:UIControlStateNormal];
+        UIImage *bgImg = [self imageWithColor:self.actionBgColorOfHighlighted size:CGSizeZero];
+        [btn setBackgroundImage:bgImg forState:UIControlStateHighlighted];
+        [btn setTitleColor:[self colorWithHex:@"CCCCCC"] forState:UIControlStateDisabled];
+        if (action.style == TLAlertActionStyleDefault) {
+            [btn setTitleColor:self.textColorOfDefault forState:UIControlStateNormal];
+            btn.titleLabel.font = self.textFontOfDefault;
+            
+        }else if (action.style == TLAlertActionStyleDestructive) {
+            [btn setTitleColor:self.textColorOfDestructive forState:UIControlStateNormal];
+            btn.titleLabel.font = self.textFontOfDestructive;
+            
+        }else if (action.style == TLAlertActionStyleCancel) {
+            [btn setTitleColor:self.textColorOfCancel forState:UIControlStateNormal];
+            btn.titleLabel.font = self.textFontOfCancel;
+        }
+        [rowView addSubview:btn];
+        [btn addTarget:self action:@selector(itemDidClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.btns[[NSString stringWithFormat:@"%p", action]] = btn;
     }
-    [rowView addSubview:btn];
-    [btn addTarget:self action:@selector(itemDidClick:) forControlEvents:UIControlEventTouchUpInside];
     
     return rowView;
 }
@@ -357,18 +422,32 @@
 // MARK: - Action
 - (void)itemDidClick:(UIButton *)btn {
     NSInteger tag = btn.tag;
+    [self clickActionWithIndex:tag];
+}
+
+- (void)itemDidClick2:(UILongPressGestureRecognizer *)gestureRecognizer {
+    NSInteger idx = gestureRecognizer.view.tag;
+    
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        [self clickActionWithIndex:idx];
+    }
+}
+
+- (void)clickActionWithIndex:(NSInteger)index {
     TLAlertAction *action = nil;
-    if (tag == kCancelBtnTag) {
+    if (index == kCancelBtnTag) {
         action = self.cancelAction;
     }else {
-        action = self.acts[tag];
+        action = self.acts[index];
     }
     
-    if (action.handler) {
-        action.handler(action);
+    if (action.enabled) {
+        if (action.handler) {
+            action.handler(action);
+        }
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 // MARK: - API
@@ -412,6 +491,10 @@
 }
 
 - (void)showInViewController:(UIViewController *)vc {
+    if (self.actions.count == 0) {
+        [NSException raise:@"TLAlertController 使用错误" format:@"actions的个数不能小于1"];
+    }
+    
     // 该宏表明存储在某些局部变量中的值在优化时不应该被编译器强制释放
     TLAlertPresentationController *pController NS_VALID_UNTIL_END_OF_SCOPE;
     pController = [[TLAlertPresentationController alloc] initWithPresentedViewController:self

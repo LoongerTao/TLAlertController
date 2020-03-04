@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, TLAlertControllerStyle) {
     TLAlertControllerStyleActionSheet = 0,
-//    TLAlertControllerStyleAlert
+    TLAlertControllerStyleAlert
 } API_AVAILABLE(ios(9.0));
 
 
