@@ -11,12 +11,11 @@
 ### 示例图
 - Alert普通模式
 
-![1.jpg](https://upload-images.jianshu.io/upload_images/3333500-daf92e4d14c5c347.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
+![2.jpg](https://upload-images.jianshu.io/upload_images/3333500-fbe5073faae9be73.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 - Alert普通多Action模式
 
-![2.jpg](https://upload-images.jianshu.io/upload_images/3333500-fbe5073faae9be73.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![1.jpg](https://upload-images.jianshu.io/upload_images/3333500-daf92e4d14c5c347.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 - Alert带自定义Action模式
