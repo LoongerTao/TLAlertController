@@ -98,7 +98,11 @@
     frame.size = size;
     CGFloat margin = (CGRectGetWidth(containerViewBounds) - size.width) * 0.5f;
     frame.origin.x = margin;
-    frame.origin.y = CGRectGetMaxY(containerViewBounds) - size.height - (Is_iPhoneX ? 34 : 8);
+    if (_modalStyle == TLModalStyleAlert) {
+        frame.origin.y = (CGRectGetMaxY(containerViewBounds) - size.height) * 0.5 + 10;
+    }else {
+        frame.origin.y = CGRectGetMaxY(containerViewBounds) - size.height - (Is_iPhoneX ? 34 : 8);
+    }
     return frame;
 }
 
@@ -146,28 +150,51 @@
     
     [containerView addSubview:toView];
     
-    if (isPresenting) {
-        CGFloat x = [self frameOfPresentedViewInContainerView].origin.x;
-        toViewInitialFrame.origin = CGPointMake(x, CGRectGetMaxY(containerView.bounds));
-        toViewInitialFrame.size = toViewFinalFrame.size;
-        toView.frame = toViewInitialFrame;
-    } else {
-        fromViewFinalFrame = CGRectOffset(fromView.frame, 0, CGRectGetHeight(fromView.frame));
-    }
-    
-    NSTimeInterval transitionDuration = self.transitionDuration;
-    
-    [UIView animateWithDuration:transitionDuration animations:^{
-        if (isPresenting)
-            toView.frame = toViewFinalFrame;
-        else
-            fromView.frame = fromViewFinalFrame;
+    NSTimeInterval transitionDuration = isPresenting ? self.transitionDuration : 0.15f;
+    if (_modalStyle == TLModalStyleAlert) {
+        if (isPresenting) {
+            toView.alpha = 0.0f;
+            toView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+        } else {
+            fromView.alpha = 1.f;
+        }
         
-    } completion:^(BOOL finished) {
- 
-        BOOL wasCancelled = [transitionContext transitionWasCancelled];
-        [transitionContext completeTransition:!wasCancelled];
-    }];
+        [UIView animateWithDuration:transitionDuration animations:^{
+            if (isPresenting) {
+                toView.alpha = 1.f;
+                toView.transform = CGAffineTransformIdentity;
+            }else {
+                fromView.alpha = 0.0f;
+            }
+            
+        } completion:^(BOOL finished) {
+    
+            BOOL wasCancelled = [transitionContext transitionWasCancelled];
+            [transitionContext completeTransition:!wasCancelled];
+        }];
+        
+    }else {
+        if (isPresenting) {
+            CGFloat x = [self frameOfPresentedViewInContainerView].origin.x;
+            toViewInitialFrame.origin = CGPointMake(x, CGRectGetMaxY(containerView.bounds));
+            toViewInitialFrame.size = toViewFinalFrame.size;
+            toView.frame = toViewInitialFrame;
+        } else {
+            fromViewFinalFrame = CGRectOffset(fromView.frame, 0, CGRectGetHeight(fromView.frame));
+        }
+        
+        [UIView animateWithDuration:transitionDuration animations:^{
+            if (isPresenting)
+                toView.frame = toViewFinalFrame;
+            else
+                fromView.frame = fromViewFinalFrame;
+            
+        } completion:^(BOOL finished) {
+            
+            BOOL wasCancelled = [transitionContext transitionWasCancelled];
+            [transitionContext completeTransition:!wasCancelled];
+        }];
+    }
 }
 
 // MARK: - UIViewControllerTransitioningDelegate

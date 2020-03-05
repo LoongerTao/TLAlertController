@@ -11,7 +11,7 @@
 
 #define kCornerRadius 15.f
 #define kMargin 8.f
-#define kSeparatorLineHeight 0.333f
+#define kSeparatorLineHeight 0.5f
 #define kRowHeight 57.f
 #define kAlertRowHeight 44.f
 #define kMaxWidth (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - kMargin * 2)
@@ -46,9 +46,9 @@
 - (instancetype)init {
     if (self = [super init]) {
         
-        self.separatorColor = [self colorWithHex:@"#3C3C3C4A"];
-        self.titleColor = [self colorWithHex:@"#979797"];
-        self.messageColor = [self colorWithHex:@"#979797"];
+        self.separatorColor = [self colorWithHex:@"#BBBBBB"];
+        self.titleColor = [self colorWithHex:@"#101010"];
+        self.messageColor = [self colorWithHex:@"#181818"];
         self.textColorOfDefault = [self colorWithHex:@"#333"];
         self.textColorOfCancel = [self colorWithHex:@"#097FFF"];
         self.textColorOfDestructive = [self colorWithHex:@"#FF4238"];;
@@ -93,25 +93,45 @@
     }
     
     if(_preferredStyle == TLAlertControllerStyleAlert) {
-        if(self.actions.count != 2) {
-            UIScrollView *scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, W, 0)];
-            [self.containerView.contentView addSubview:scrollV];
-            _stackScrollView = scrollV;
-            scrollV.bounces = NO;
-            
-            UIStackView *stackView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight * self.acts.count)];
-            _stackView = stackView;
-            [scrollV addSubview:stackView];
-            stackView.axis = UILayoutConstraintAxisVertical;
-            stackView.distribution = UIStackViewDistributionFillEqually;
-            
-            [self.actions enumerateObjectsUsingBlock:^(TLAlertAction *action, NSUInteger idx, BOOL * _Nonnull stop) {
-                BOOL isShow = idx != 0 || (idx == 0 && (self.title || self.message));
+        BOOL isMultiRow = self.isMultiRow;
+        UIScrollView *scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, W, 0)];
+        [self.containerView.contentView addSubview:scrollV];
+        _stackScrollView = scrollV;
+        scrollV.bounces = NO;
+        
+        UIStackView *stackView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight * self.acts.count)];
+        _stackView = stackView;
+        [scrollV addSubview:stackView];
+        stackView.axis = isMultiRow ? UILayoutConstraintAxisVertical : UILayoutConstraintAxisHorizontal;
+        stackView.distribution = UIStackViewDistributionFillEqually;
+        
+        if(isMultiRow) {
+            [self.acts enumerateObjectsUsingBlock:^(TLAlertAction *action, NSUInteger idx, BOOL * _Nonnull stop) {
+                BOOL isShow = idx != 0 || (idx == 0 && (self.title || self.message)); // 是否显示顶部分割线
                 [_stackView addArrangedSubview:[self addRowWithAction:action tag:idx showSeparator:isShow]];
             }];
+            if (self.cancelAction) {
+                BOOL isShow = self.acts.count > 0 || (self.title || self.message); // 是否显示顶部分割线
+                [_stackView addArrangedSubview:[self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:isShow]];
+            }
         }else {
+            stackView.spacing = kSeparatorLineHeight;
+            BOOL isShow = self.title || self.message; // 是否显示顶部分割线
+            if (self.cancelAction) {
+                BOOL isShow = self.acts.count > 0 || (self.title || self.message);
+                [_stackView addArrangedSubview:[self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:isShow]];
+            }
+            [self.acts enumerateObjectsUsingBlock:^(TLAlertAction *action, NSUInteger idx, BOOL * _Nonnull stop) {
+                UIView *row = [self addRowWithAction:action tag:idx showSeparator:isShow];
+                [_stackView addArrangedSubview:row];
+            }];
             
+            CALayer *sp = [[CALayer alloc] init];
+            sp.backgroundColor = self.separatorColor.CGColor;
+            sp.frame = CGRectMake((kAlertWidth - kSeparatorLineHeight) * 0.5, 0, kSeparatorLineHeight, kAlertRowHeight);
+            [scrollV.layer addSublayer:sp];
         }
+        
     }else {
         if (self.acts.count) {
             UIScrollView *scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, W, 0)];
@@ -191,34 +211,41 @@
        _titleView.frame = CGRectMake(0, 0, W, CGRectGetMaxY(_messageLabel.frame) + 24);
     }
 
-    if (self.acts.count) {
-        CGFloat H = self.rowHeight * self.acts.count;
-        CGFloat top = _titleView ? CGRectGetMaxY(_titleView.frame) : 0;
-        CGFloat kMaxHeight = 0;
-        CGFloat maxH = 0;
-        if (_preferredStyle == TLAlertControllerStyleAlert) {
-            if (isLandspace) {
-                kMaxHeight = MIN(size.width, size.height);
+    NSInteger qty = _preferredStyle == TLAlertControllerStyleActionSheet ? self.acts.count : self.actions.count;
+    if (qty) {
+        if (self.isMultiRow) {
+            CGFloat H = self.rowHeight * qty;
+            CGFloat top = _titleView ? CGRectGetMaxY(_titleView.frame) : 0;
+            CGFloat kMaxHeight = 0;
+            CGFloat maxH = 0;
+            if (_preferredStyle == TLAlertControllerStyleAlert) {
+                if (isLandspace) {
+                    kMaxHeight = MIN(size.width, size.height);
+                }else {
+                    kMaxHeight = MAX(size.width, size.height);
+                }
+                maxH = kMaxHeight - top - 122;
             }else {
-                kMaxHeight = MAX(size.width, size.height);
+                CGFloat iphoneXBar = Is_iPhoneX ? 34 : 0;
+                if (isLandspace) {
+                    kMaxHeight = MIN(size.width, size.height) - kMargin - iphoneXBar;
+                }else {
+                    CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 44;
+                    kMaxHeight = MAX(size.width, size.height) - top - iphoneXBar;
+                }
+                maxH = kMaxHeight - top - (self.cancelAction ? kMargin + self.rowHeight : 0);
             }
-            maxH = kMaxHeight - top - 122;
+            
+            H = H > maxH ? maxH : H;
+            _stackScrollView.frame = CGRectMake(0, top, W, H);
+            _stackView.frame = CGRectMake(0, 0, W, self.rowHeight * qty);
+            _stackScrollView.contentSize = _stackView.frame.size;
         }else {
-            CGFloat iphoneXBar = Is_iPhoneX ? 34 : 0;
-            if (isLandspace) {
-                kMaxHeight = MIN(size.width, size.height) - kMargin - iphoneXBar;
-            }else {
-                CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 44;
-                kMaxHeight = MAX(size.width, size.height) - top - iphoneXBar;
-            }
-            maxH = kMaxHeight - top - (self.cancelAction ? kMargin + self.rowHeight : 0);
+            CGFloat top = _titleView ? CGRectGetMaxY(_titleView.frame) : 0;
+            _stackScrollView.frame = CGRectMake(0, top, W, kAlertRowHeight);
+            _stackView.frame = CGRectMake(0, 0, W, kAlertRowHeight);
+            _stackScrollView.contentSize = _stackView.frame.size;
         }
-        
-        H = H > maxH ? maxH : H;
-        _stackScrollView.frame = CGRectMake(0, top, W, H);
-        NSInteger count = _preferredStyle == TLAlertControllerStyleAlert ? self.actions.count : self.acts.count;
-        _stackView.frame = CGRectMake(0, 0, W, self.rowHeight * count);
-        _stackScrollView.contentSize = _stackView.frame.size;
     }
     
     if (_stackScrollView || _titleView) {
@@ -284,11 +311,23 @@
 }
 
 // MARK: - common method
+/// 是否多行显示
+- (BOOL)isMultiRow {
+    if (_preferredStyle == UIAlertControllerStyleActionSheet) return YES;
+    
+    NSArray <TLAlertAction *>*actions = self.actions;
+    BOOL isMultiRow = actions.count != 2 || (actions.firstObject.customView || actions.lastObject.customView);
+    return isMultiRow;
+}
+
 - (CGFloat)rowHeight {
     return _preferredStyle == TLAlertControllerStyleAlert ? kAlertRowHeight : kRowHeight;
 }
 - (UIView *)addRowWithAction:(TLAlertAction *)action tag:(NSInteger)tag showSeparator:(BOOL)isShow {
     CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
+    if(!self.isMultiRow) {
+        W = (kAlertWidth - kSeparatorLineHeight) * 0.5f;
+    }
     UIView *rowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight)];
 
     if (isShow) {
@@ -456,6 +495,7 @@
                           preferredStyle:(TLAlertControllerStyle)preferredStyle
 {
     TLAlertController *alertController = [[self alloc] init];
+    alertController.allowTapMaskToDismiss = preferredStyle == TLAlertControllerStyleActionSheet;
     alertController.title = title;
     alertController.message = message;
     alertController->_preferredStyle = preferredStyle;
@@ -506,6 +546,7 @@
             wself.didTapMaskView();
         }
     };
+    pController.modalStyle = @(_preferredStyle).integerValue;
     self.transitioningDelegate = pController;
     [vc presentViewController:self animated:YES completion:nil];
 }

@@ -40,9 +40,10 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertAction : NSObject
 + (instancetype)actionWithCustomView:(UIView *)customView style:(TLAlertActionStyle)style handler:(void (^ __nullable)(TLAlertAction *action))handler;
 
 @property (nullable, nonatomic, readonly) NSString *title;
-/// 会自动匹配superview的size
+/// 会自动匹配superview的size，如果点击时不想被dismiss，请设置action.enabled = NO
 @property (nullable, nonatomic, readonly) UIView *customView;
 @property (nonatomic, readonly) TLAlertActionStyle style;
+/// Deafult is YES, 决定action被电击时会不会进行dismiss操作
 @property (nonatomic, getter=isEnabled) BOOL enabled;
 @property(nonatomic, readonly) void (^handler)(TLAlertAction *action);
 

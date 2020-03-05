@@ -34,7 +34,7 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertController : UIViewContro
 /// presentingViewController (发起modal控制器)
 - (void)showInViewController:(UIViewController *)vc;
 
-/// 允许点击空白处进行Dismiss，Default is NO
+/// 允许点击空白处进行Dismiss，TLAlertControllerStyleActionSheet Default is YES, TLAlertControllerStyleAlert Default is NO
 @property(nonatomic, assign) BOOL allowTapMaskToDismiss;
 /// 点击空白处进行回调
 @property(nonatomic, copy) void (^didTapMaskView)(void);
