@@ -64,6 +64,8 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertController : UIViewContro
 @property(nonatomic, strong) UIFont *textFontOfDestructive;
 /// action高亮背景颜色, Default is [UIColor colorWithWhite:0 alpha:0.03]
 @property(nonatomic, strong) UIColor *actionBgColorOfHighlighted;
+/// action的siize，可用于自定义Action
+@property(nonatomic, assign, readonly) CGSize actionSize;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -8,6 +8,7 @@
 
 #import "TLAlertController.h"
 #import "TLAlertPresentationController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kCornerRadius 15.f
 #define kMargin 8.f
@@ -18,6 +19,8 @@
 #define kAlertWidth 270.f
 #define kCancelBtnTag 1000
 
+
+// MARK: - TLAlertController
 @interface TLAlertController ()
 
 @property(nonatomic, strong) TLAlertAction *cancelAction;
@@ -551,7 +554,10 @@
     [vc presentViewController:self animated:YES completion:nil];
 }
 
-
+- (CGSize)actionSize {
+    CGFloat w = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
+    return CGSizeMake(w, [self rowHeight] - kAlertRowHeight);
+}
 @end
 
 

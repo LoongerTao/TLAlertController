@@ -27,24 +27,23 @@
 - (void)tap:(UITapGestureRecognizer *)tap {
     CGFloat x = [tap locationInView:self.view].x;
     if (x > CGRectGetWidth(self.view.bounds) * 0.5) {
-        TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:TLAlertControllerStyleAlert];
+        TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:TLAlertControllerStyleActionSheet];
         [alertController addAction:[TLAlertAction actionWithTitle:@"Action" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
         [alertController addAction:[TLAlertAction actionWithTitle:@"Action2" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
+        alertController.actions.firstObject.enabled = NO;
         [alertController addAction:[TLAlertAction actionWithTitle:@"Action3" style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
-//        
-//        alertController.actions.firstObject.enabled = NO;
-//
-//        UIView *redView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 101, 10)];
-//        redView.backgroundColor = [UIColor redColor];
-//        [alertController addAction:[TLAlertAction actionWithCustomView:redView style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
-//            NSLog(@"CustomView");
-//        }]];
+
+        UIView *redView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
+        redView.userInteractionEnabled = YES;
+        [alertController addAction:[TLAlertAction actionWithCustomView:redView style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
+            NSLog(@"CustomView");
+        }]];
         
         [alertController addAction:[TLAlertAction actionWithTitle:@"Cancel" style:TLAlertActionStyleCancel handler:nil]];
         [alertController showInViewController:self];
