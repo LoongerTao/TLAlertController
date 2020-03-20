@@ -48,7 +48,7 @@
     
     self.dimmingView.alpha = 0.f;
     [transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        self.dimmingView.alpha = 0.2f;
+        self.dimmingView.alpha = 0.4f;
     } completion:NULL];
 }
 

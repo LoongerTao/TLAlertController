@@ -6,7 +6,7 @@
 
 @implementation SceneDelegate
 
-
+/*
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -46,5 +46,5 @@
     // to restore the scene back to its current state.
 }
 
-
+*/
 @end

@@ -5,6 +5,8 @@
 //  Created by 故乡的云 on 2020/2/27.
 //  Copyright © 2020 故乡的云. All rights reserved.
 //
+//  因为内部使用了UIStackView，所以只支持iOS 9.0+ （目前主流App也都只适配到iOS 9.0）
+
 
 #import <UIKit/UIKit.h>
 #import "TLAlertAction.h"
@@ -66,6 +68,9 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertController : UIViewContro
 @property(nonatomic, strong) UIColor *actionBgColorOfHighlighted;
 /// action的siize，可用于自定义Action
 @property(nonatomic, assign, readonly) CGSize actionSize;
+
+/// 取消按钮所在视图是否使用模糊效果，default is NO
+@property(nonatomic, assign) BOOL isBlurEffectOfCancelView;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -38,7 +38,7 @@
 @property(nonatomic, weak)  UIStackView *stackView;
 
 /// 取消按钮容器
-@property(nonatomic, weak)  UIView *cancelView;
+@property(nonatomic, weak)  UIVisualEffectView *cancelView;
 
 @property(nonatomic, strong) NSMutableDictionary <NSString *, UIButton *>*btns;
 @end
@@ -155,16 +155,7 @@
         }
         
         if (self.cancelAction) {
-            UIView *cancelView = [[UIView alloc] init];
-            _cancelView = cancelView;
-            cancelView.backgroundColor = [UIColor whiteColor];
-            cancelView.layer.cornerRadius = kCornerRadius;
-            cancelView.clipsToBounds = YES;
-            [self.view addSubview:cancelView];
-            
-            UIView *view = [self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:NO];
-            view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
-            [cancelView addSubview:view];
+            [self cancelView];
         }
     }
     
@@ -207,7 +198,7 @@
                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                              attributes:@{NSFontAttributeName: _messageLabel.font}
                                                 context:nil].size.height;
-        CGFloat top = _titleLabel ? CGRectGetMaxY(_titleLabel.frame) + 8 : 16;
+        CGFloat top = _titleLabel ? CGRectGetMaxY(_titleLabel.frame) + 13 : 16;
         CGSize size = [_messageLabel sizeThatFits:CGSizeMake(W - kMargin * 4, rowH * 3)];
         size.height = size.height > rowH * 3 ? rowH * 3 : size.height;
         _messageLabel.frame = CGRectMake((W - size.width) / 2, top, size.width, size.height);
@@ -276,10 +267,14 @@
 // MARK: - add sub views
 - (UIVisualEffectView *)containerView {
     if (!_containerView) {
-        UIVisualEffect *effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        UIVisualEffect *effect = nil;
+        if (@available(iOS 13.0, *)) {
+            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterialLight];
+        } else {
+            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        }
         UIVisualEffectView *containerView = [[UIVisualEffectView alloc] initWithEffect:effect];
         _containerView = containerView;
-//        containerView.backgroundColor = [UIColor whiteColor];
         containerView.layer.cornerRadius = kCornerRadius;
         containerView.clipsToBounds = YES;
         containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -297,18 +292,26 @@
     return _titleView;
 }
 
-- (UIView *)cancelView {
+- (UIVisualEffectView *)cancelView {
     if (!_cancelView) {
-        UIView *cancelView = [[UIView alloc] init];
+        UIVisualEffect *effect = nil;
+        if (@available(iOS 13.0, *)) {
+            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterialLight];
+        } else {
+            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        }
+        UIVisualEffectView *cancelView = [[UIVisualEffectView alloc] initWithEffect:effect];
         _cancelView = cancelView;
-        cancelView.backgroundColor = [UIColor whiteColor];
         cancelView.layer.cornerRadius = kCornerRadius;
         cancelView.clipsToBounds = YES;
         [self.view addSubview:cancelView];
         
         UIView *view = [self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:NO];
+        if (!_isBlurEffectOfCancelView) {
+            view.backgroundColor = [UIColor whiteColor];
+        }
         view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
-        [cancelView addSubview:view];
+        [cancelView.contentView addSubview:view];
     }
     return _cancelView;
 }

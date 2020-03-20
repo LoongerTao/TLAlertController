@@ -49,33 +49,32 @@
         [alertController showInViewController:self];
         
     }else {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved." preferredStyle:UIAlertControllerStyleActionSheet];
              
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action1" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action2" style:UIAlertActionStyleDestructive handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDestructive handler:nil]];
-//        alertController.actions.firstObject.enabled = NO;
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDestructive handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action1" style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action2" style:UIAlertActionStyleDestructive handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
+       /* [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDestructive handler:nil]];
+        alertController.actions.firstObject.enabled = NO;
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDestructive handler:nil]];*/
         [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-//
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDestructive handler:nil]];
-//
-//
+/*
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDestructive handler:nil]];
+
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action3" style:UIAlertActionStyleDefault handler:nil]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action4" style:UIAlertActionStyleDefault handler:nil]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action6" style:UIAlertActionStyleDefault handler:nil]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action5" style:UIAlertActionStyleDestructive handler:nil]];
 
-      
+      */
         [self presentViewController:alertController animated:YES completion:nil];
     }
 }
