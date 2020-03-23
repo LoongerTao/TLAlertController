@@ -3,15 +3,48 @@
 
 
 ### 支持
-- 支持自定义文本字体和颜色
+- 高仿系统原生样式效果，有Alert和Sheet两种模式
+- 支持自定义文本字体和颜色等
 - 支持自定义view作为Action
 - 支持横屏
 - 支持深色模式
 - 不支持文本输入，但可以采用自定义view作为Action的方式实现
+- 只支持iOS 9.0及以上系统
+- 支持pod
 
 ### 用法
 - 与UIAlertController的用法高度一致
 - 直接将demo中`Lib文件夹中的文件`导入到项目即可使用
+- 也可以pod
+```
+    'TLAlertLib', '~> 1.0.0'
+```
+- 示例代码
+```objc
+TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:TLAlertControllerStyleActionSheet];
+                 
+[alertController addAction:[TLAlertAction actionWithTitle:@"Action (Enabel = NO)" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
+    NSLog(@"%@", action.title);
+}]];
+        
+[alertController addAction:[TLAlertAction actionWithTitle:@"Action2 (Default)" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
+    NSLog(@"%@", action.title);
+}]];
+[alertController addAction:[TLAlertAction actionWithTitle:@"Action3 (Destructive)" style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
+    NSLog(@"%@", action.title);
+}]];
+
+/// 用自定义view作为Action
+UIView *redView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
+redView.userInteractionEnabled = YES;
+[alertController addAction:[TLAlertAction actionWithCustomView:redView style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
+    NSLog(@"CustomView");
+}]];
+
+[alertController addAction:[TLAlertAction actionWithTitle:@"Cancel" style:TLAlertActionStyleCancel handler:nil]];
+
+[alertController showInViewController:self];
+```
 
 ### 示例图
 - Alert普通模式
