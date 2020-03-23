@@ -26,15 +26,14 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertController : UIViewContro
 - (void)addAction:(TLAlertAction *)action;
 @property (nonatomic, readonly) NSArray<TLAlertAction *> *actions;
 
-//- (void)addTextFieldWithConfigurationHandler:(void (^ __nullable)(UITextField *textField))configurationHandler;
-//@property (nullable, nonatomic, readonly) NSArray<UITextField *> *textFields;
-
 @property (nullable, nonatomic, copy) NSString *title;
 @property (nullable, nonatomic, copy) NSString *message;
 @property (nonatomic, readonly) TLAlertControllerStyle preferredStyle;
 
 /// presentingViewController (发起modal控制器)
 - (void)showInViewController:(UIViewController *)vc;
+/// 提供给自定义按钮事件使用
+- (void)dismiss;
 
 /// 允许点击空白处进行Dismiss，TLAlertControllerStyleActionSheet Default is YES, TLAlertControllerStyleAlert Default is NO
 @property(nonatomic, assign) BOOL allowTapMaskToDismiss;

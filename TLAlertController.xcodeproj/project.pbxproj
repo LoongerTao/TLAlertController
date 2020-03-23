@@ -70,7 +70,7 @@
 		146645E4240799FF00FA0EE8 /* TLAlertController */ = {
 			isa = PBXGroup;
 			children = (
-				146645FE24079D8D00FA0EE8 /* Lib */,
+				146645FE24079D8D00FA0EE8 /* TLAlertLib */,
 				146645E5240799FF00FA0EE8 /* AppDelegate.h */,
 				146645E6240799FF00FA0EE8 /* AppDelegate.m */,
 				146645E8240799FF00FA0EE8 /* SceneDelegate.h */,
@@ -86,7 +86,7 @@
 			path = TLAlertController;
 			sourceTree = "<group>";
 		};
-		146645FE24079D8D00FA0EE8 /* Lib */ = {
+		146645FE24079D8D00FA0EE8 /* TLAlertLib */ = {
 			isa = PBXGroup;
 			children = (
 				146645FF24079DFE00FA0EE8 /* TLAlertController.h */,
@@ -96,7 +96,7 @@
 				146646022407A0B600FA0EE8 /* TLAlertPresentationController.h */,
 				146646032407A0B600FA0EE8 /* TLAlertPresentationController.m */,
 			);
-			path = Lib;
+			path = TLAlertLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

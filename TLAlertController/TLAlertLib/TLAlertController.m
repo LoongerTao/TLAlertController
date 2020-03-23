@@ -39,7 +39,7 @@
 
 /// 取消按钮容器
 @property(nonatomic, weak)  UIVisualEffectView *cancelView;
-
+/// 非自定义view作为Action的所有Action的button集合（Action的地址作为key）
 @property(nonatomic, strong) NSMutableDictionary <NSString *, UIButton *>*btns;
 @end
 
@@ -174,7 +174,7 @@
     /// 刷新布局
     [self updatePreferredContentSizeWithTraitCollection:self.traitCollection];
     
-    /// 更新按钮使能
+    /// 更新按钮使能「此处设置是保证action对应btn的enabled的准确性」
     for (TLAlertAction *action in self.actions) {
         self.btns[[NSString stringWithFormat:@"%p", action]].enabled = action.enabled;
     }
@@ -355,7 +355,6 @@
         if ([action.customView isKindOfClass:[UIButton class]]) {
             UIButton *btn = (UIButton *)action.customView;
             [btn addTarget:self action:@selector(itemDidClick:) forControlEvents:UIControlEventTouchUpInside];
-            self.btns[[NSString stringWithFormat:@"%p", action]] = btn;
         }else {
             UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(itemDidClick2:)];
             gesture.minimumPressDuration = 0.001;
@@ -557,6 +556,10 @@
     pController.modalStyle = @(_preferredStyle).integerValue;
     self.transitioningDelegate = pController;
     [vc presentViewController:self animated:YES completion:nil];
+}
+
+- (void)dismiss {
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (CGSize)actionSize {
