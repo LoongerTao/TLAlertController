@@ -10,6 +10,7 @@
 #import "TLAlertController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UISegmentedControl *sgmt;
 
 @end
 
@@ -23,19 +24,22 @@
     [self.view addGestureRecognizer:tap];
 }
 
-
 - (void)tap:(UITapGestureRecognizer *)tap {
     CGFloat x = [tap locationInView:self.view].x;
+    
     if (x > CGRectGetWidth(self.view.bounds) * 0.5) {
-        TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:TLAlertControllerStyleActionSheet];
-        [alertController addAction:[TLAlertAction actionWithTitle:@"Action" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
-            NSLog(@"%@", action.title);
-        }]];
-        [alertController addAction:[TLAlertAction actionWithTitle:@"Action2" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
+        TLAlertControllerStyle style = _sgmt.selectedSegmentIndex == 1 ? TLAlertControllerStyleActionSheet : TLAlertControllerStyleAlert;
+        TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:style];
+                         
+        [alertController addAction:[TLAlertAction actionWithTitle:@"Action (Enabel = NO)" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
         alertController.actions.firstObject.enabled = NO;
-        [alertController addAction:[TLAlertAction actionWithTitle:@"Action3" style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
+                
+        [alertController addAction:[TLAlertAction actionWithTitle:@"Action2 (Default)" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
+            NSLog(@"%@", action.title);
+        }]];
+        [alertController addAction:[TLAlertAction actionWithTitle:@"Action3 (Destructive)" style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
 
@@ -49,7 +53,8 @@
         [alertController showInViewController:self];
         
     }else {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved." preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertControllerStyle style = _sgmt.selectedSegmentIndex == 1 ? UIAlertControllerStyleActionSheet : UIAlertControllerStyleAlert;
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved." preferredStyle:style];
              
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action1" style:UIAlertActionStyleDefault handler:nil]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action2" style:UIAlertActionStyleDestructive handler:nil]];
