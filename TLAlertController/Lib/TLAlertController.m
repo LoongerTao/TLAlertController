@@ -12,7 +12,7 @@
 
 #define kCornerRadius 15.f
 #define kMargin 8.f
-#define kSeparatorLineHeight 0.5f
+#define kSeparatorLineHeight 0.33f
 #define kRowHeight 57.f
 #define kAlertRowHeight 44.f
 #define kMaxWidth (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - kMargin * 2)
@@ -49,12 +49,23 @@
 - (instancetype)init {
     if (self = [super init]) {
         
-        self.separatorColor = [self colorWithHex:@"#BBBBBB"];
-        self.titleColor = [self colorWithHex:@"#101010"];
-        self.messageColor = [self colorWithHex:@"#181818"];
-        self.textColorOfDefault = [self colorWithHex:@"#333"];
+        BOOL isDarkMode = NO;
+        if (@available(iOS 13.0, *)) {
+            self.effectStyle = UIBlurEffectStyleSystemMaterial;
+            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+               if (mode == UIUserInterfaceStyleDark) {
+                   isDarkMode = YES;
+               }
+        } else {
+            self.effectStyle = UIBlurEffectStyleExtraLight;
+        }
+        
+        self.separatorColor = [self colorWithHex:isDarkMode ? @"#999" : @"#AAA"];
+        self.titleColor = [self colorWithHex:isDarkMode ? @"#FFF" : @"#101010"];
+        self.messageColor = [self colorWithHex:isDarkMode ? @"#EFEFEF" : @"#181818"];
+        self.textColorOfDefault = [self colorWithHex:isDarkMode ? @"#CCC" : @"#333"];
         self.textColorOfCancel = [self colorWithHex:@"#097FFF"];
-        self.textColorOfDestructive = [self colorWithHex:@"#FF4238"];;
+        self.textColorOfDestructive = [self colorWithHex:@"#FF4238"];
         
         self.titleFont = [UIFont boldSystemFontOfSize:13];
         self.messageFont = [UIFont systemFontOfSize:13];
@@ -62,7 +73,8 @@
         self.textFontOfCancel = [UIFont boldSystemFontOfSize:17];
         self.textFontOfDestructive = [UIFont systemFontOfSize:17];
         
-        self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:0.03];
+        self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:isDarkMode ? 0.13 : 0.04];
+        self.backgroundColorOfCancelView = [self colorWithHex:isDarkMode ? @"#2C2C2E" : @"#FFF"];;
         
         self.btns = [NSMutableDictionary dictionary];
     }
@@ -267,12 +279,7 @@
 // MARK: - add sub views
 - (UIVisualEffectView *)containerView {
     if (!_containerView) {
-        UIVisualEffect *effect = nil;
-        if (@available(iOS 13.0, *)) {
-            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterialLight];
-        } else {
-            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-        }
+        UIVisualEffect *effect = [UIBlurEffect effectWithStyle:self.effectStyle];
         UIVisualEffectView *containerView = [[UIVisualEffectView alloc] initWithEffect:effect];
         _containerView = containerView;
         containerView.layer.cornerRadius = kCornerRadius;
@@ -294,12 +301,7 @@
 
 - (UIVisualEffectView *)cancelView {
     if (!_cancelView) {
-        UIVisualEffect *effect = nil;
-        if (@available(iOS 13.0, *)) {
-            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemMaterialLight];
-        } else {
-            effect  = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-        }
+        UIVisualEffect *effect = [UIBlurEffect effectWithStyle:self.effectStyle];
         UIVisualEffectView *cancelView = [[UIVisualEffectView alloc] initWithEffect:effect];
         _cancelView = cancelView;
         cancelView.layer.cornerRadius = kCornerRadius;
@@ -308,7 +310,7 @@
         
         UIView *view = [self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:NO];
         if (!_isBlurEffectOfCancelView) {
-            view.backgroundColor = [UIColor whiteColor];
+            view.backgroundColor = self.backgroundColorOfCancelView;
         }
         view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
         [cancelView.contentView addSubview:view];
