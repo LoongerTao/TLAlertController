@@ -31,7 +31,7 @@ UIKIT_EXTERN API_AVAILABLE(ios(9.0)) @interface TLAlertAction : NSObject
 /**
  *  初始化`TLAlertController`的按钮
  *
- *  @param customView   自定义View
+ *  @param customView   自定义View，可通过` TLAlertController： - actionSize方法`来获取action的size
  *  @param style   按钮style，跟系统一样，有 Default、Cancel、Destructive 三种类型`
  *  @param handler 处理点击事件的block，注意 TLAlertAction 点击后必定会隐藏 alertController，不需要手动在 handler 里 hide，` 如果需要在点击后不被dismiss请将enabled设置为NO`
  *

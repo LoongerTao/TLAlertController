@@ -31,20 +31,25 @@
         TLAlertControllerStyle style = _sgmt.selectedSegmentIndex == 1 ? TLAlertControllerStyleActionSheet : TLAlertControllerStyleAlert;
         TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:style];
                          
-        [alertController addAction:[TLAlertAction actionWithTitle:@"Action (Enabel = NO)" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
+        [alertController addAction:[TLAlertAction actionWithTitle:@"Action" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
         alertController.actions.firstObject.enabled = NO;
                 
-        [alertController addAction:[TLAlertAction actionWithTitle:@"Action2 (Default)" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
+        [alertController addAction:[TLAlertAction actionWithTitle:@"Action2" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
-        [alertController addAction:[TLAlertAction actionWithTitle:@"Action3 (Destructive)" style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
+        [alertController addAction:[TLAlertAction actionWithTitle:@"Action3" style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
         }]];
 
         UIView *redView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
         redView.userInteractionEnabled = YES;
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, alertController.actionSize.width, alertController.actionSize.height)];
+        label.text = @"Custom View";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont systemFontOfSize:14];
+        [redView addSubview:label];
         [alertController addAction:[TLAlertAction actionWithCustomView:redView style:TLAlertActionStyleDestructive handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"CustomView");
         }]];

@@ -13,6 +13,7 @@
 #define kCornerRadius 15.f
 #define kMargin 8.f
 #define kSeparatorLineHeight 0.33f
+#define kAlertSeparatorLineHeight 0.5f
 #define kRowHeight 57.f
 #define kAlertRowHeight 44.f
 #define kMaxWidth (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - kMargin * 2)
@@ -130,7 +131,7 @@
                 [_stackView addArrangedSubview:[self addRowWithAction:self.cancelAction tag:kCancelBtnTag showSeparator:isShow]];
             }
         }else {
-            stackView.spacing = kSeparatorLineHeight;
+            stackView.spacing = self.separatorLineHeight;
             BOOL isShow = self.title || self.message; // 是否显示顶部分割线
             if (self.cancelAction) {
                 BOOL isShow = self.acts.count > 0 || (self.title || self.message);
@@ -143,7 +144,7 @@
             
             CALayer *sp = [[CALayer alloc] init];
             sp.backgroundColor = self.separatorColor.CGColor;
-            sp.frame = CGRectMake((kAlertWidth - kSeparatorLineHeight) * 0.5, 0, kSeparatorLineHeight, kAlertRowHeight);
+            sp.frame = CGRectMake((kAlertWidth - self.separatorLineHeight) * 0.5, 0, self.separatorLineHeight, kAlertRowHeight);
             [scrollV.layer addSublayer:sp];
         }
         
@@ -331,21 +332,26 @@
 - (CGFloat)rowHeight {
     return _preferredStyle == TLAlertControllerStyleAlert ? kAlertRowHeight : kRowHeight;
 }
+
+- (CGFloat)separatorLineHeight {
+    return _preferredStyle == TLAlertControllerStyleAlert ? kAlertSeparatorLineHeight : kSeparatorLineHeight;
+}
+
 - (UIView *)addRowWithAction:(TLAlertAction *)action tag:(NSInteger)tag showSeparator:(BOOL)isShow {
     CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
     if(!self.isMultiRow) {
-        W = (kAlertWidth - kSeparatorLineHeight) * 0.5f;
+        W = (kAlertWidth - self.separatorLineHeight) * 0.5f;
     }
     UIView *rowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight)];
 
     if (isShow) {
         CALayer *sp = [[CALayer alloc] init];
         sp.backgroundColor = self.separatorColor.CGColor;
-        sp.frame = CGRectMake(0, 0, W, kSeparatorLineHeight);
+        sp.frame = CGRectMake(0, 0, W, self.separatorLineHeight);
         [rowView.layer addSublayer:sp];
     }
     
-    CGRect frame = CGRectMake(0, kSeparatorLineHeight, W, self.rowHeight - kSeparatorLineHeight);
+    CGRect frame = CGRectMake(0, self.separatorLineHeight, W, self.rowHeight - self.separatorLineHeight);
     if (action.customView) {
         action.customView.frame = frame;
         [rowView addSubview:action.customView];
@@ -564,7 +570,7 @@
 
 - (CGSize)actionSize {
     CGFloat w = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
-    return CGSizeMake(w, [self rowHeight] - kAlertRowHeight);
+    return CGSizeMake(w, [self rowHeight] - [self separatorLineHeight]);
 }
 @end
 
