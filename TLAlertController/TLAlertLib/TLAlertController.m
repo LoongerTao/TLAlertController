@@ -47,42 +47,6 @@
 @implementation TLAlertController
 @dynamic title;
 
-- (instancetype)init {
-    if (self = [super init]) {
-        
-        BOOL isDarkMode = NO;
-        if (@available(iOS 13.0, *)) {
-            self.effectStyle = UIBlurEffectStyleSystemMaterial;
-            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-               if (mode == UIUserInterfaceStyleDark) {
-                   isDarkMode = YES;
-               }
-        } else {
-            self.effectStyle = UIBlurEffectStyleExtraLight;
-        }
-        
-        self.separatorColor = [self colorWithHex:isDarkMode ? @"#999" : @"#AAA"];
-        self.titleColor = [self colorWithHex:isDarkMode ? @"#FFF" : @"#101010"];
-        self.messageColor = [self colorWithHex:isDarkMode ? @"#EFEFEF" : @"#181818"];
-        self.textColorOfDefault = [self colorWithHex:isDarkMode ? @"#CCC" : @"#333"];
-        self.textColorOfCancel = [self colorWithHex:@"#097FFF"];
-        self.textColorOfDestructive = [self colorWithHex:@"#FF4238"];
-        
-        self.titleFont = [UIFont boldSystemFontOfSize:13];
-        self.messageFont = [UIFont systemFontOfSize:13];
-        self.textFontOfDefault = [UIFont systemFontOfSize:17];
-        self.textFontOfCancel = [UIFont boldSystemFontOfSize:17];
-        self.textFontOfDestructive = [UIFont systemFontOfSize:17];
-        
-        self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:isDarkMode ? 0.13 : 0.04];
-        self.backgroundColorOfCancelView = [self colorWithHex:isDarkMode ? @"#2C2C2E" : @"#FFF"];;
-        
-        self.btns = [NSMutableDictionary dictionary];
-    }
-    return self;
-}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -195,15 +159,15 @@
     CGSize size = [UIScreen mainScreen].bounds.size;
     CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth; // 始终以最小屏宽计算
    
+    CGFloat topset = _preferredStyle == TLAlertControllerStyleAlert ? 20 : 14.5;
     if (_titleLabel) {
         CGFloat rowH = [@"一行文本的高度" boundingRectWithSize:CGSizeMake(1000, 40)
                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                              attributes:@{NSFontAttributeName: _titleLabel.font}
                                                 context:nil].size.height;
         CGSize size = [_titleLabel sizeThatFits:CGSizeMake(W - kMargin * 4, rowH * 2)];
-        size.height = size.height > rowH * 2 ? rowH * 2 : size.height;
-        _titleLabel.frame = CGRectMake((W - size.width) / 2, 16, size.width, size.height);
-       _titleView.frame = CGRectMake(0, 0, W, CGRectGetMaxY(_titleLabel.frame) + 16);
+        size.height = size.height > rowH * 2 ? rowH * 2 : size.height; // 最多显示两行title
+        _titleLabel.frame = CGRectMake((W - size.width) / 2, topset, size.width, size.height);
     }
     
     if (_messageLabel) {
@@ -211,11 +175,21 @@
                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                              attributes:@{NSFontAttributeName: _messageLabel.font}
                                                 context:nil].size.height;
-        CGFloat top = _titleLabel ? CGRectGetMaxY(_titleLabel.frame) + 13 : 16;
+        CGFloat centerset = _preferredStyle == TLAlertControllerStyleAlert ? 3 : 12;
+        CGFloat top = _titleLabel ? CGRectGetMaxY(_titleLabel.frame) + centerset : topset;
         CGSize size = [_messageLabel sizeThatFits:CGSizeMake(W - kMargin * 4, rowH * 3)];
-        size.height = size.height > rowH * 3 ? rowH * 3 : size.height;
+        size.height = size.height > rowH * 3 ? rowH * 3 : size.height;  // 最多显示三行message
         _messageLabel.frame = CGRectMake((W - size.width) / 2, top, size.width, size.height);
-       _titleView.frame = CGRectMake(0, 0, W, CGRectGetMaxY(_messageLabel.frame) + 24);
+        if (_titleLabel) {
+            CGFloat bottomset = _preferredStyle == TLAlertControllerStyleAlert ? 20 : 24.5;
+            _titleView.frame = CGRectMake(0, 0, W, CGRectGetMaxY(_messageLabel.frame) + bottomset);
+        }else {
+            CGFloat bottomset = _preferredStyle == TLAlertControllerStyleAlert ? 19.5 : 13.5;
+            _titleView.frame = CGRectMake(0, 0, W, CGRectGetMaxY(_messageLabel.frame) + bottomset);
+        }
+    }else {
+        CGFloat bottomset = _preferredStyle == TLAlertControllerStyleAlert ? 19.5 : 13.5;
+        _titleView.frame = CGRectMake(0, 0, W, CGRectGetMaxY(_titleLabel.frame) + bottomset);
     }
 
     NSInteger qty = _preferredStyle == TLAlertControllerStyleActionSheet ? self.acts.count : self.actions.count;
@@ -512,7 +486,42 @@
     alertController.title = title;
     alertController.message = message;
     alertController->_preferredStyle = preferredStyle;
+    [alertController initProperties];
     return alertController;
+}
+
+- (void)initProperties {
+    BOOL isDarkMode = NO;
+    if (@available(iOS 13.0, *)) {
+        self.effectStyle = UIBlurEffectStyleSystemMaterial;
+        UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+           if (mode == UIUserInterfaceStyleDark) {
+               isDarkMode = YES;
+           }
+    } else {
+        self.effectStyle = UIBlurEffectStyleExtraLight;
+    }
+            
+    NSString *titleColor = _preferredStyle == TLAlertControllerStyleAlert ? @"#101010" : @"#878889";
+    NSString *msgeColor = _preferredStyle == TLAlertControllerStyleAlert ? @"#181818" : @"#959698";
+    
+    self.separatorColor = [self colorWithHex:isDarkMode ? @"#999" : @"#AAA"];
+    self.titleColor = [self colorWithHex:isDarkMode ? @"#FFF" : titleColor];
+    self.messageColor = [self colorWithHex:isDarkMode ? @"#EFEFEF" : msgeColor];
+    self.textColorOfDefault = [self colorWithHex:isDarkMode ? @"#CCC" : @"#333"];
+    self.textColorOfCancel = [self colorWithHex:@"#097FFF"];
+    self.textColorOfDestructive = [self colorWithHex:@"#FF4238"];
+    
+    self.titleFont = [UIFont boldSystemFontOfSize:13];
+    self.messageFont = [UIFont systemFontOfSize:13];
+    self.textFontOfDefault = [UIFont systemFontOfSize:17];
+    self.textFontOfCancel = [UIFont boldSystemFontOfSize:17];
+    self.textFontOfDestructive = [UIFont systemFontOfSize:17];
+    
+    self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:isDarkMode ? 0.13 : 0.04];
+    self.backgroundColorOfCancelView = [self colorWithHex:isDarkMode ? @"#2C2C2E" : @"#FFF"];;
+    
+    self.btns = [NSMutableDictionary dictionary];
 }
 
 - (void)addAction:(TLAlertAction *)action {

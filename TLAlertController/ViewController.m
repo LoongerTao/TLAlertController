@@ -26,10 +26,11 @@
 
 - (void)tap:(UITapGestureRecognizer *)tap {
     CGFloat x = [tap locationInView:self.view].x;
-    
+    NSString *title = @"故乡的云";
+    NSString *msg = @"Copyright © 2020 故乡的云. All rights reserved";
     if (x > CGRectGetWidth(self.view.bounds) * 0.5) {
         TLAlertControllerStyle style = _sgmt.selectedSegmentIndex == 1 ? TLAlertControllerStyleActionSheet : TLAlertControllerStyleAlert;
-        TLAlertController *alertController = [TLAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved" preferredStyle:style];
+        TLAlertController *alertController = [TLAlertController alertControllerWithTitle:title message:msg preferredStyle:style];
                          
         [alertController addAction:[TLAlertAction actionWithTitle:@"Action" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
             NSLog(@"%@", action.title);
@@ -59,7 +60,7 @@
         
     }else {
         UIAlertControllerStyle style = _sgmt.selectedSegmentIndex == 1 ? UIAlertControllerStyleActionSheet : UIAlertControllerStyleAlert;
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"故乡的云" message:@"Copyright © 2020 故乡的云. All rights reserved." preferredStyle:style];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:style];
              
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action1" style:UIAlertActionStyleDefault handler:nil]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"Action2" style:UIAlertActionStyleDestructive handler:nil]];
