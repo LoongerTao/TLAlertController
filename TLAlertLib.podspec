@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = 'TLAlertLib'
-  s.version      = '1.0.1'
+  s.version      = '1.0.2'
   s.license      = 'MIT'
   s.ios.deployment_target = '9.0'
   s.platform     = :ios, '9.0'
