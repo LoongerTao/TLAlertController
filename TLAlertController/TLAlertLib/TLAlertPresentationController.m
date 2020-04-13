@@ -153,6 +153,9 @@
     NSTimeInterval transitionDuration = isPresenting ? self.transitionDuration : 0.15f;
     if (_modalStyle == TLModalStyleAlert) {
         if (isPresenting) {
+            if(CGPointEqualToPoint(toView.frame.origin, CGPointZero)) {
+                toView.frame = [self frameOfPresentedViewInContainerView];
+            }
             toView.alpha = 0.0f;
             toView.transform = CGAffineTransformMakeScale(1.2, 1.2);
         } else {

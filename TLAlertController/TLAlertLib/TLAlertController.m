@@ -451,6 +451,7 @@
     [self clickActionWithIndex:tag];
 }
 
+/// 自定义View非Button情况的点击事件
 - (void)itemDidClick2:(UILongPressGestureRecognizer *)gestureRecognizer {
     NSInteger idx = gestureRecognizer.view.tag;
     
@@ -468,11 +469,11 @@
     }
     
     if (action.enabled) {
-        if (action.handler) {
-            action.handler(action);
-        }
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (action.handler) {
+                action.handler(action);
+            }
+        }];                
     }
 }
 

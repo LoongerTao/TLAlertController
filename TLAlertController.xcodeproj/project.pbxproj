@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		144D152A24332802001B5BD0 /* UIWindow+TouchAnimate.m in Sources */ = {isa = PBXBuildFile; fileRef = 144D152924332802001B5BD0 /* UIWindow+TouchAnimate.m */; };
 		146645E7240799FF00FA0EE8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645E6240799FF00FA0EE8 /* AppDelegate.m */; };
 		146645EA240799FF00FA0EE8 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645E9240799FF00FA0EE8 /* SceneDelegate.m */; };
 		146645ED240799FF00FA0EE8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645EC240799FF00FA0EE8 /* ViewController.m */; };
@@ -16,10 +17,13 @@
 		146645F824079A0100FA0EE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 146645F724079A0100FA0EE8 /* main.m */; };
 		1466460124079DFE00FA0EE8 /* TLAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1466460024079DFE00FA0EE8 /* TLAlertController.m */; };
 		146646042407A0B600FA0EE8 /* TLAlertPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 146646032407A0B600FA0EE8 /* TLAlertPresentationController.m */; };
+		14748FA82444688800107E76 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14748FA72444688800107E76 /* TestViewController.m */; };
 		14BEB2E42409070C000C89EF /* TLAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 14BEB2E32409070C000C89EF /* TLAlertAction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		144D152824332802001B5BD0 /* UIWindow+TouchAnimate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+TouchAnimate.h"; sourceTree = "<group>"; };
+		144D152924332802001B5BD0 /* UIWindow+TouchAnimate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+TouchAnimate.m"; sourceTree = "<group>"; };
 		146645E2240799FF00FA0EE8 /* TLAlertController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TLAlertController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		146645E5240799FF00FA0EE8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		146645E6240799FF00FA0EE8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -36,6 +40,8 @@
 		1466460024079DFE00FA0EE8 /* TLAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAlertController.m; sourceTree = "<group>"; };
 		146646022407A0B600FA0EE8 /* TLAlertPresentationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLAlertPresentationController.h; sourceTree = "<group>"; };
 		146646032407A0B600FA0EE8 /* TLAlertPresentationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAlertPresentationController.m; sourceTree = "<group>"; };
+		14748FA62444688800107E76 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		14748FA72444688800107E76 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		14BEB2E22409070C000C89EF /* TLAlertAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLAlertAction.h; sourceTree = "<group>"; };
 		14BEB2E32409070C000C89EF /* TLAlertAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAlertAction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,8 +81,12 @@
 				146645E6240799FF00FA0EE8 /* AppDelegate.m */,
 				146645E8240799FF00FA0EE8 /* SceneDelegate.h */,
 				146645E9240799FF00FA0EE8 /* SceneDelegate.m */,
+				144D152824332802001B5BD0 /* UIWindow+TouchAnimate.h */,
+				144D152924332802001B5BD0 /* UIWindow+TouchAnimate.m */,
 				146645EB240799FF00FA0EE8 /* ViewController.h */,
 				146645EC240799FF00FA0EE8 /* ViewController.m */,
+				14748FA62444688800107E76 /* TestViewController.h */,
+				14748FA72444688800107E76 /* TestViewController.m */,
 				146645EE240799FF00FA0EE8 /* Main.storyboard */,
 				146645F124079A0100FA0EE8 /* Assets.xcassets */,
 				146645F324079A0100FA0EE8 /* LaunchScreen.storyboard */,
@@ -174,6 +184,8 @@
 				146645E7240799FF00FA0EE8 /* AppDelegate.m in Sources */,
 				146645F824079A0100FA0EE8 /* main.m in Sources */,
 				146645EA240799FF00FA0EE8 /* SceneDelegate.m in Sources */,
+				144D152A24332802001B5BD0 /* UIWindow+TouchAnimate.m in Sources */,
+				14748FA82444688800107E76 /* TestViewController.m in Sources */,
 				1466460124079DFE00FA0EE8 /* TLAlertController.m in Sources */,
 				14BEB2E42409070C000C89EF /* TLAlertAction.m in Sources */,
 			);
