@@ -16,7 +16,6 @@
 #define kAlertSeparatorLineHeight 0.5f
 #define kRowHeight 57.f
 #define kAlertRowHeight 44.f
-#define kMaxWidth (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - kMargin * 2)
 #define kAlertWidth 270.f
 #define kCancelBtnTag 1000
 
@@ -50,14 +49,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
+    if (_attributedTitle) {
+        self.title = _attributedTitle.string;
+    }
+    if (_attributedMessage) {
+        self.message = _attributedMessage.string;
+    }
+    
+    CGFloat W = self.width;
     if (self.title || self.message) {
         if (self.title) {
             UILabel *titleLabel = [[UILabel alloc] init];
             titleLabel.numberOfLines = 0;
-            titleLabel.text = self.title;
             titleLabel.font = self.titleFont;
             titleLabel.textColor = self.titleColor;
+            _attributedTitle ? (titleLabel.attributedText = _attributedTitle) : (titleLabel.text = self.title);
             [self.titleView addSubview:titleLabel];
             _titleLabel = titleLabel;
         }
@@ -67,6 +73,8 @@
             msgLabel.text = self.message;
             msgLabel.font = self.messageFont;
             msgLabel.textColor = self.messageColor;
+            msgLabel.textAlignment = _messageAlignment;
+            _attributedMessage ? (msgLabel.attributedText = _attributedMessage) : (msgLabel.text = self.message);
             [self.titleView addSubview:msgLabel];
             _messageLabel = msgLabel;
         }
@@ -108,7 +116,7 @@
             
             CALayer *sp = [[CALayer alloc] init];
             sp.backgroundColor = self.separatorColor.CGColor;
-            sp.frame = CGRectMake((kAlertWidth - self.separatorLineHeight) * 0.5, 0, self.separatorLineHeight, kAlertRowHeight);
+            sp.frame = CGRectMake((_alertWidth - self.separatorLineHeight) * 0.5, 0, self.separatorLineHeight, self.rowHeight);
             [scrollV.layer addSublayer:sp];
         }
         
@@ -157,7 +165,7 @@
 - (void)updatePreferredContentSizeWithTraitCollection:(UITraitCollection *)traitCollection {
     BOOL isLandspace = traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact;
     CGSize size = [UIScreen mainScreen].bounds.size;
-    CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth; // 始终以最小屏宽计算
+    CGFloat W = self.width; // 始终以最小屏宽计算
    
     CGFloat topset = _preferredStyle == TLAlertControllerStyleAlert ? 20 : 14.5;
     if (_titleLabel) {
@@ -165,7 +173,7 @@
                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                              attributes:@{NSFontAttributeName: _titleLabel.font}
                                                 context:nil].size.height;
-        CGSize size = [_titleLabel sizeThatFits:CGSizeMake(W - kMargin * 4, rowH * 2)];
+        CGSize size = [_titleLabel sizeThatFits:CGSizeMake(W - _margin * 4, rowH * 2)];
         size.height = size.height > rowH * 2 ? rowH * 2 : size.height; // 最多显示两行title
         _titleLabel.frame = CGRectMake((W - size.width) / 2, topset, size.width, size.height);
     }
@@ -177,7 +185,7 @@
                                                 context:nil].size.height;
         CGFloat centerset = _preferredStyle == TLAlertControllerStyleAlert ? 3 : 12;
         CGFloat top = _titleLabel ? CGRectGetMaxY(_titleLabel.frame) + centerset : topset;
-        CGSize size = [_messageLabel sizeThatFits:CGSizeMake(W - kMargin * 4, rowH * 3)];
+        CGSize size = [_messageLabel sizeThatFits:CGSizeMake(W - _margin * 4, rowH * 3)];
         size.height = size.height > rowH * 3 ? rowH * 3 : size.height;  // 最多显示三行message
         _messageLabel.frame = CGRectMake((W - size.width) / 2, top, size.width, size.height);
         if (_titleLabel) {
@@ -209,12 +217,12 @@
             }else {
                 CGFloat iphoneXBar = Is_iPhoneX ? 34 : 0;
                 if (isLandspace) {
-                    kMaxHeight = MIN(size.width, size.height) - kMargin - iphoneXBar;
+                    kMaxHeight = MIN(size.width, size.height) - _margin - iphoneXBar;
                 }else {
                     CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 44;
                     kMaxHeight = MAX(size.width, size.height) - top - iphoneXBar;
                 }
-                maxH = kMaxHeight - top - (self.cancelAction ? kMargin + self.rowHeight : 0);
+                maxH = kMaxHeight - top - (self.cancelAction ? _margin + self.rowHeight : 0);
             }
             
             H = H > maxH ? maxH : H;
@@ -241,7 +249,7 @@
     if (_preferredStyle == TLAlertControllerStyleActionSheet && self.cancelAction) {
         CGFloat top = 0;
         if (_containerView) {
-            top = CGRectGetMaxY(_containerView.frame) + kMargin;
+            top = CGRectGetMaxY(_containerView.frame) + _margin;
         }
         _cancelView.frame = CGRectMake(0, top, W, self.rowHeight);
         preferredContentH = CGRectGetMaxY(_cancelView.frame);
@@ -257,7 +265,7 @@
         UIVisualEffect *effect = [UIBlurEffect effectWithStyle:self.effectStyle];
         UIVisualEffectView *containerView = [[UIVisualEffectView alloc] initWithEffect:effect];
         _containerView = containerView;
-        containerView.layer.cornerRadius = kCornerRadius;
+        containerView.layer.cornerRadius = self.cornerRadius;
         containerView.clipsToBounds = YES;
         containerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         [self.view addSubview:containerView];
@@ -279,7 +287,7 @@
         UIVisualEffect *effect = [UIBlurEffect effectWithStyle:self.effectStyle];
         UIVisualEffectView *cancelView = [[UIVisualEffectView alloc] initWithEffect:effect];
         _cancelView = cancelView;
-        cancelView.layer.cornerRadius = kCornerRadius;
+        cancelView.layer.cornerRadius = self.cornerRadius;
         cancelView.clipsToBounds = YES;
         [self.view addSubview:cancelView];
         
@@ -303,18 +311,19 @@
     return isMultiRow;
 }
 
-- (CGFloat)rowHeight {
-    return _preferredStyle == TLAlertControllerStyleAlert ? kAlertRowHeight : kRowHeight;
+/// 只作用与Sheet 类型
+- (CGFloat)sheetWidth {
+    return (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - kMargin * 2);
 }
 
-- (CGFloat)separatorLineHeight {
-    return _preferredStyle == TLAlertControllerStyleAlert ? kAlertSeparatorLineHeight : kSeparatorLineHeight;
+- (CGFloat)width {
+    return _preferredStyle == TLAlertControllerStyleAlert ? self.alertWidth : self.sheetWidth;
 }
 
 - (UIView *)addRowWithAction:(TLAlertAction *)action tag:(NSInteger)tag showSeparator:(BOOL)isShow {
-    CGFloat W = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
+    CGFloat W = self.width;
     if(!self.isMultiRow) {
-        W = (kAlertWidth - self.separatorLineHeight) * 0.5f;
+        W = (_alertWidth - self.separatorLineHeight) * 0.5f;
     }
     UIView *rowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, W, self.rowHeight)];
 
@@ -344,9 +353,9 @@
         UIButton *btn = [[UIButton alloc] initWithFrame:frame];
         btn.tag = tag;
         [btn setTitle:action.title forState:UIControlStateNormal];
-        UIImage *bgImg = [self imageWithColor:self.actionBgColorOfHighlighted size:CGSizeZero];
+        UIImage *bgImg = [TLAlertController imageWithColor:self.actionBgColorOfHighlighted size:CGSizeZero];
         [btn setBackgroundImage:bgImg forState:UIControlStateHighlighted];
-        [btn setTitleColor:[self colorWithHex:@"CCCCCC"] forState:UIControlStateDisabled];
+        [btn setTitleColor:[TLAlertController colorWithHex:@"CCCCCC"] forState:UIControlStateDisabled];
         if (action.style == TLAlertActionStyleDefault) {
             [btn setTitleColor:self.textColorOfDefault forState:UIControlStateNormal];
             btn.titleLabel.font = self.textFontOfDefault;
@@ -369,7 +378,7 @@
 }
 
 /// 生成指定颜色的图片，默认size = （3，3）
-- (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size
 {
     if (size.width <= 0  ) {
         size = CGSizeMake(3, 3);
@@ -398,7 +407,7 @@
 *
 * @return UIColor对象
 */
-- (UIColor *)colorWithHex:(NSString *)hexString {
++ (UIColor *)colorWithHex:(NSString *)hexString {
     if (hexString.length <= 0) return nil;
     
     NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
@@ -437,7 +446,7 @@
     return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
 }
 
-- (CGFloat)colorComponentFrom:(NSString *)string start:(NSUInteger)start length:(NSUInteger)length {
++ (CGFloat)colorComponentFrom:(NSString *)string start:(NSUInteger)start length:(NSUInteger)length {
     NSString *substring = [string substringWithRange: NSMakeRange(start, length)];
     NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat: @"%@%@", substring, substring];
     unsigned hexComponent;
@@ -491,6 +500,16 @@
     return alertController;
 }
 
++ (instancetype)alertControllerWithAttributedTitle:(NSAttributedString *)attributedTitle
+                                 attributedMessage:(NSAttributedString *)attributedMessage
+                                    preferredStyle:(TLAlertControllerStyle)preferredStyle
+{
+    TLAlertController *alertController = [self alertControllerWithTitle:nil message:nil preferredStyle:preferredStyle];
+    alertController.attributedTitle = attributedTitle;
+    alertController.attributedMessage = attributedMessage;
+    return alertController;
+}
+
 - (void)initProperties {
     BOOL isDarkMode = NO;
     if (@available(iOS 13.0, *)) {
@@ -506,12 +525,12 @@
     NSString *titleColor = _preferredStyle == TLAlertControllerStyleAlert ? @"#101010" : @"#878889";
     NSString *msgeColor = _preferredStyle == TLAlertControllerStyleAlert ? @"#181818" : @"#959698";
     
-    self.separatorColor = [self colorWithHex:isDarkMode ? @"#999" : @"#AAA"];
-    self.titleColor = [self colorWithHex:isDarkMode ? @"#FFF" : titleColor];
-    self.messageColor = [self colorWithHex:isDarkMode ? @"#EFEFEF" : msgeColor];
-    self.textColorOfDefault = [self colorWithHex:isDarkMode ? @"#CCC" : @"#333"];
-    self.textColorOfCancel = [self colorWithHex:@"#097FFF"];
-    self.textColorOfDestructive = [self colorWithHex:@"#FF4238"];
+    self.separatorColor = [TLAlertController colorWithHex:isDarkMode ? @"#999" : @"#AAA"];
+    self.titleColor = [TLAlertController colorWithHex:isDarkMode ? @"#FFF" : titleColor];
+    self.messageColor = [TLAlertController colorWithHex:isDarkMode ? @"#EFEFEF" : msgeColor];
+    self.textColorOfDefault = [TLAlertController colorWithHex:isDarkMode ? @"#CCC" : @"#333"];
+    self.textColorOfCancel = [TLAlertController colorWithHex:@"#097FFF"];
+    self.textColorOfDestructive = [TLAlertController colorWithHex:@"#FF4238"];
     
     self.titleFont = [UIFont boldSystemFontOfSize:13];
     self.messageFont = [UIFont systemFontOfSize:13];
@@ -520,9 +539,16 @@
     self.textFontOfDestructive = [UIFont systemFontOfSize:17];
     
     self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:isDarkMode ? 0.13 : 0.04];
-    self.backgroundColorOfCancelView = [self colorWithHex:isDarkMode ? @"#2C2C2E" : @"#FFF"];;
+    self.backgroundColorOfCancelView = [TLAlertController colorWithHex:isDarkMode ? @"#2C2C2E" : @"#FFF"];;
     
     self.btns = [NSMutableDictionary dictionary];
+    
+    self.rowHeight = _preferredStyle == TLAlertControllerStyleAlert ? kAlertRowHeight : kRowHeight;
+    self.separatorLineHeight = _preferredStyle == TLAlertControllerStyleAlert ? kAlertSeparatorLineHeight : kSeparatorLineHeight;
+    
+    self.cornerRadius = kCornerRadius;
+    self.margin = kMargin;
+    self.alertWidth = kAlertWidth;
 }
 
 - (void)addAction:(TLAlertAction *)action {
@@ -579,9 +605,9 @@
 }
 
 - (CGSize)actionSize {
-    CGFloat w = _preferredStyle == TLAlertControllerStyleAlert ? kAlertWidth : kMaxWidth;
-    return CGSizeMake(w, [self rowHeight] - [self separatorLineHeight]);
+    return CGSizeMake(self.width, [self rowHeight] - [self separatorLineHeight]);
 }
+
 @end
 
 

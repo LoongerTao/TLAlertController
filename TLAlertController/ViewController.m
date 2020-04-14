@@ -62,6 +62,9 @@
             [self presentViewController:vc animated:YES completion:nil];
         }]];
         
+//        alertController.alertWidth = 320;
+//        alertController.rowHeight = 50;
+        
         [alertController addAction:[TLAlertAction actionWithTitle:@"Cancel" style:TLAlertActionStyleCancel handler:nil]];
         [alertController showInViewController:self];
         
@@ -106,15 +109,29 @@
 /// 测试转场之后响应Alert
 - (void)testCallback {
     TLAlertControllerStyle style = TLAlertControllerStyleAlert;
-    NSString *title = @"故乡的云";
-    NSString *msg = @"Copyright © 2020 故乡的云. All rights reserved";
-    TLAlertController *alertController = [TLAlertController alertControllerWithTitle:title message:msg preferredStyle:style];
+    NSAttributedString *title = [self attributedStringWithString:@"故乡的云" hightlightSubString:@"乡的"];
+    NSAttributedString *msg = [self attributedStringWithString:@"Copyright © 2020 故乡的云. All rights reserved" hightlightSubString:@"故乡的云"];;
+    TLAlertController *alertController = [TLAlertController alertControllerWithAttributedTitle:title attributedMessage:msg preferredStyle:style];
     [alertController addAction:[TLAlertAction actionWithTitle:@"Done" style:TLAlertActionStyleDefault handler:^(TLAlertAction * _Nonnull action) {
         NSLog(@"%@", action.title);
     }]];
     [alertController addAction:[TLAlertAction actionWithTitle:@"Cancel" style:TLAlertActionStyleCancel handler:^(TLAlertAction * _Nonnull action) {
         NSLog(@"%@", action.title);
     }]];
+    alertController.messageAlignment = NSTextAlignmentCenter;
+    alertController.titleFont = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold]; // 弥补文字计算误差
     [alertController showInViewController:self];
+}
+
+- (NSAttributedString *)attributedStringWithString:(NSString *)string hightlightSubString:(NSString *)subString {
+    NSMutableAttributedString *attText = [[NSMutableAttributedString alloc] initWithString:string attributes:@{
+        NSForegroundColorAttributeName: [TLAlertController colorWithHex:@"#333"],
+        NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular]
+    }];
+    [attText setAttributes:@{
+        NSForegroundColorAttributeName: [TLAlertController colorWithHex:@"#FE5621"],
+        NSFontAttributeName: [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold]
+    } range:[string rangeOfString:subString]];
+    return attText;
 }
 @end
