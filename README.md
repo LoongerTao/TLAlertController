@@ -1,6 +1,9 @@
 # TLAlertController
 仿UIAlertController
 
+### FAQ
+1. 在进行`dismiss/pop`转场后`立即使用TLAlertController`显示弹窗时显示时，显示失败或坐标不对
+- 导致该问题的原因是`dismiss/pop`转场事件还未彻底结束。因为同一时间只能有一个转场事务所，所以只要在转场事件彻底结束后再发起弹窗即可（如可在`dismiss/pop转场完成回调中发起弹窗`）
 
 ### 支持
 - 高仿系统原生样式效果，有Alert和Sheet两种模式
@@ -67,9 +70,5 @@ redView.userInteractionEnabled = YES;
 
 ![4.jpg](https://upload-images.jianshu.io/upload_images/3333500-c92eb1f3a4e65fd2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-
-### FAQ
-1. 在进行`dismiss/pop`转场后`立即使用TLAlertController`显示弹窗时显示时，显示失败或坐标不对
-- 导致该问题的原因是`dismiss/pop`转场事件还未彻底结束。因为同一时间只能有一个转场事务所，所以只要在转场事件彻底结束后再发起弹窗即可（如可在`dismiss/pop转场完成回调中发起弹窗`）
 
 
