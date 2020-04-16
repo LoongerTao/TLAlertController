@@ -522,8 +522,9 @@
         self.effectStyle = UIBlurEffectStyleExtraLight;
     }
             
-    NSString *titleColor = _preferredStyle == TLAlertControllerStyleAlert ? @"#101010" : @"#878889";
-    NSString *msgeColor = _preferredStyle == TLAlertControllerStyleAlert ? @"#181818" : @"#959698";
+    BOOL isAlert = _preferredStyle == TLAlertControllerStyleAlert;
+    NSString *titleColor = isAlert ? @"#101010" : @"#878889";
+    NSString *msgeColor = isAlert ? @"#181818" : @"#959698";
     
     self.separatorColor = [TLAlertController colorWithHex:isDarkMode ? @"#999" : @"#AAA"];
     self.titleColor = [TLAlertController colorWithHex:isDarkMode ? @"#FFF" : titleColor];
@@ -532,10 +533,10 @@
     self.textColorOfCancel = [TLAlertController colorWithHex:@"#097FFF"];
     self.textColorOfDestructive = [TLAlertController colorWithHex:@"#FF4238"];
     
-    self.titleFont = [UIFont boldSystemFontOfSize:13];
+    self.titleFont =  [UIFont systemFontOfSize:(isAlert ? 17 : 13) weight:UIFontWeightSemibold];
     self.messageFont = [UIFont systemFontOfSize:13];
     self.textFontOfDefault = [UIFont systemFontOfSize:17];
-    self.textFontOfCancel = [UIFont boldSystemFontOfSize:17];
+    self.textFontOfCancel = [UIFont systemFontOfSize:17 weight:isAlert ? UIFontWeightRegular : UIFontWeightSemibold];
     self.textFontOfDestructive = [UIFont systemFontOfSize:17];
     
     self.actionBgColorOfHighlighted = [UIColor colorWithWhite:0 alpha:isDarkMode ? 0.13 : 0.04];
@@ -543,8 +544,8 @@
     
     self.btns = [NSMutableDictionary dictionary];
     
-    self.rowHeight = _preferredStyle == TLAlertControllerStyleAlert ? kAlertRowHeight : kRowHeight;
-    self.separatorLineHeight = _preferredStyle == TLAlertControllerStyleAlert ? kAlertSeparatorLineHeight : kSeparatorLineHeight;
+    self.rowHeight = isAlert ? kAlertRowHeight : kRowHeight;
+    self.separatorLineHeight = isAlert ? kAlertSeparatorLineHeight : kSeparatorLineHeight;
     
     self.cornerRadius = kCornerRadius;
     self.margin = kMargin;
